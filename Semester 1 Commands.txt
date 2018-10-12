@@ -1,0 +1,57 @@
+Commands to Configure a Switch:
+
+Switch>enable
+Switch#configure terminal
+Switch(config)#hostname [name here]
+[name](config)#line con 0
+[name](config-line)#password cisco
+[name](config-line)#login
+[name](config-line)#logging synchronous
+[name](config-line)#line vty 0 15
+[name](config-line)#password cisco
+[name](config-line)#login
+[name](config-line)#transport input ssh telnet
+[name](config-line)#exit
+[name](config-vlan)#int vlan 1
+[name](config-if)# ip address 192.168.10.1 255.255.255.0
+
+Other Commands:
+
+exit – backs up one space
+end – backs out of config
+do show run – shows what you’ve done
+
+
+
+12 OCT In Class Exercise
+
+Part 2: Step 2
+Router>enable
+Router#configure terminal
+Router(config)#hostname router1
+	router1(config)#no ip domain-lookup
+	router1(config)#enable secret class
+	router1(config)#line con 0
+	router1(config-line)#password cisco
+	router1(config-line)#login
+	router1(config-line)#exit
+	router1(config)#line vty 0 4
+	router1(config-line)#password cisco
+	router1(config-line)#login
+	router1(config-line)#exit
+	router1(config)#service password-encryption
+	router1(config)#banner motd # Anauthorized access is 	prohibited #
+	router1(config)#interface G0/0
+	router1(config-if)#ip address 192.168.0.1 255.255.255.0
+	router1(config-if)#no shut
+	router1(config-if)#description # Connected to PC-B #
+	router1(config-if)#exit
+	router1(config)#interface G0/1
+	router1(config-if)#ip address 192.168.1.1 255.255.255.0
+	router1(config-if)#no shut
+	router1(config-if)#description # Connected to Switch1 #
+	router1(config-if)#exit
+	router1(config)#exit
+	router1#copy running-config startup-config
+	router1#clock set 14:05:07 12 OCT 2018
+
