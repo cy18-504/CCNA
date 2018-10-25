@@ -1,0 +1,415 @@
+2) Basic Router Config
+
+en
+conf t
+hostname R1
+no ip domain-lookup 
+ip domain-name ccna-sem2.com
+enable secret ccnaenpass
+line con 0
+password ccnacon
+login
+logging synch
+exec-t 0
+exit
+line vty 0 4
+password ccnavty
+login
+exit
+banner motd #Unauthorized access is prohibited#
+service password-encryp
+
+en
+conf t
+hostname R2
+no ip domain-lookup 
+ip domain-name ccna-sem2.com
+enable secret ccnaenpass
+line con 0
+password ccnacon
+login
+logging synch
+exec-t 0
+exit
+line vty 0 4
+password ccnavty
+login
+exit
+banner motd #Unauthorized access is prohibited#
+service password-encryp
+
+en
+conf t
+hostname R3
+no ip domain-lookup 
+ip domain-name ccna-sem2.com
+enable secret ccnaenpass
+line con 0
+password ccnacon
+login
+logging synch
+exec-t 0
+exit
+line vty 0 4
+password ccnavty
+login
+exit
+banner motd #Unauthorized access is prohibited#
+service password-encryp
+
+3) Basic Switch Config
+
+en
+conf t
+hostname S1
+no ip domain-lookup 
+ip domain-name ccna-sem2.com
+enable secret ccnaenpass
+line con 0
+password ccnacon
+login
+logging synch
+exec-t 0
+exit
+line vty 0 4
+password ccnavty
+login
+exit
+banner motd #Unauthorized access is prohibited#
+service password-encryp
+
+en
+conf t
+hostname S2
+no ip domain-lookup 
+ip domain-name ccna-sem2.com
+enable secret ccnaenpass
+line con 0
+password ccnacon
+login
+logging synch
+exec-t 0
+exit
+line vty 0 4
+password ccnavty
+login
+exit
+banner motd #Unauthorized access is prohibited#
+service password-encryp
+
+en
+conf t
+hostname S3
+no ip domain-lookup 
+ip domain-name ccna-sem2.com
+enable secret ccnaenpass
+line con 0
+password ccnacon
+login
+logging synch
+exec-t 0
+exit
+line vty 0 4
+password ccnavty
+login
+exit
+banner motd #Unauthorized access is prohibited#
+service password-encryp
+
+4) Layer 3 Router Config
+
+int s0/0/0
+ip address 10.123.12.1 255.255.255.252
+ipv6 address 2001:ACAD:CAFE:12::1/64
+no shut
+desc Faces R2
+exit
+
+int s0/0/0
+ip address 10.123.12.2 255.255.255.252
+ipv6 address 2001:ACAD:CAFE:12::2/64
+no shut
+desc Faces R1
+int s0/0/1
+ip address 10.123.23.1 255.255.255.252
+ipv6 address 2001:ACAD:CAFE:23::1/64
+no shut
+desc Faces R3
+int lo 1
+ip address 172.16.10.1 255.255.255.0
+int lo 2
+ip address 172.16.20.1 255.255.255.0
+int lo 3
+ip address 172.16.30.1 255.255.255.0
+int lo 4
+ipv6 address 2001:ACAD:CAFE:2::1/64
+exit
+
+int s0/0/1
+ip address 10.123.23.2 255.255.255.252
+ipv6 address 2001:ACAD:CAFE:23::2/64
+no shut
+desc Faces R2
+exit
+int lo 0
+ip address 3.3.3.3 255.255.255.255
+ipv6 address 3::3/128
+exit
+
+5) Layer 3 Switch Config
+
+vlan 10
+name Management
+vlan 150
+name Officers
+vlan 200
+name NCOs
+vlan 250
+name PVTs
+exit
+int vlan 10
+ip address 192.168.10.11 255.255.255.0
+no shut
+exit
+ip default-gateway 192.168.10.1
+int range g1/0/1-24
+shut
+int range g1/1/1-4
+shut
+int range te1/1/1-4
+shut
+int g0/0
+shut
+int vlan 1
+no shut
+int g1/0/1
+switchport mode trunk
+no shut
+int g1/0/5
+switchport mode trunk
+no shut
+int g1/0/13
+switchport mode access
+switchport access vlan 150
+switchport port-security mac sticky
+switchport port-security max 3
+no shut
+exit
+
+vlan 10
+name Management
+vlan 150
+name Officers
+vlan 200
+name NCOs
+vlan 250
+name PVTs
+exit
+int vlan 10
+ip address 192.168.10.12 255.255.255.0
+no shut
+exit
+ip default-gateway 192.168.10.1
+int range g1/0/1-28
+shut
+int f0
+shut
+int vlan 1
+no shut
+int g1/0/1
+switchport mode trunk
+no shut
+int g1/0/5
+switchport mode trunk
+no shut
+int g1/0/13
+switchport mode access
+switchport access vlan 200
+switchport port-security mac sticky
+switchport port-security max 3
+no shut
+exit
+
+vlan 10
+name Management
+vlan 150
+name Officers
+vlan 200
+name NCOs
+vlan 250
+name PVTs
+exit
+int vlan 10
+ip address 192.168.10.13 255.255.255.0
+no shut
+exit
+ip default-gateway 192.168.10.1
+int range g1/0/1-28
+shut
+int f0
+shut
+int vlan 1
+no shut
+int g1/0/1
+switchport mode trunk
+no shut
+int g1/0/13
+switchport mode access
+switchport access vlan 250
+switchport port-security mac sticky
+switchport port-security max 3
+no shut
+exit
+
+6) R1 Subinterfaces
+
+int g0/0
+no shut
+exit
+int g0/0.10
+encapsulation dot1q 10
+ip address 192.168.10.1 255.255.255.0
+desc VLAN10
+int g0/0.150
+encapsulation dot1q 150
+ip address 192.168.150.1 255.255.255.0
+desc VLAN150
+int g0/0.200
+encapsulation dot1q 200
+ip address 192.168.200.1 255.255.255.0
+desc VLAN200
+int g0/0.250
+encapsulation dot1q 250
+ip address 192.168.250.1 255.255.255.0
+desc VLAN250
+exit
+
+7) RIPv2 Protocol
+
+router rip
+version 2
+net 10.0.0.0
+net 192.168.10
+net 192.168.150
+net 192.168.200
+net 192.168.250
+passive-int g0/0
+no auto-sum
+
+router rip
+version 2
+net 10.0.0.0
+net 172.16.0.0
+passive-int lo 1
+passive-int lo 2
+passive-int lo 3
+no auto-sum
+
+router rip
+version 2
+net 10.0.0.0
+passive-int lo 0
+no auto-sum
+
+8) Default Route Config
+
+ipv6 unicast
+ip route 0.0.0.0 0.0.0.0 s0/0/0
+ipv6 route ::/0 s0/0/0
+
+ipv6 unicast
+ip route 0.0.0.0 0.0.0.0 s0/0/1
+ipv6 route ::/0 s0/0/1
+ip route 209.165.0.0 255.255.0.0 s0/0/0
+
+ipv6 unicast
+ip route 0.0.0.0 0.0.0.0 lo 0
+ipv6 route ::/0 lo 0
+ip route 209.165.0.0 255.255.0.0 s0/0/1
+ipv6 route 2001:ACAD:CAFE::/48 s0/0/1
+
+10) DHCP on R1
+
+ip dhcp excluded-address 192.168.10.1 192.168.10.10
+ip dhcp excluded-address 192.168.150.1 192.168.150.10
+ip dhcp excluded-address 192.168.200.1 192.168.200.10
+ip dhcp excluded-address 192.168.250.1 192.168.250.10
+ip dhcp pool VLAN150
+dns-server 209.244.0.3 209.244.0.4
+Domain-name CISCO-LAB150.COM
+network 192.168.150.0 255.255.255.0
+default-gateway 192.168.10.1
+exit
+ip dhcp pool VLAN200
+dns-server 209.244.0.3 209.244.0.4
+Domain-name CISCO-LAB200.COM
+network 192.168.200.0 255.255.255.0
+default-gateway 192.168.10.1
+exit
+ip dhcp pool VLAN250
+dns-server 209.244.0.3 209.244.0.4
+Domain-name CISCO-LAB250.COM
+network 192.168.250.0 255.255.255.0
+default-gateway 192.168.10.1
+exit
+
+11) NAT on R1
+
+ip nat insdie source static 192.168.150.10 209.165.150.254
+int g0/0
+ip int nat out
+int g0/0.150
+ip int nat in
+exit
+ip access-list standard ACCESS_LIST250
+permit 192.168.250.0 0.0.0.255
+exit
+ip nat pool NAT-POOL250 209.165.250.100 209.165.250.103 netmask 255.255.255.0
+ip nat inside source list ACCESS-LIST250 pool NAT-POOL250 overload
+int g0/0.250
+ip nat in
+exit
+
+12) NTP
+
+exit
+clock set 23:59:00 31 dec 2017
+conf t
+ntp master 3
+
+ntp server 10.123.12.1
+
+ntp server 10.123.12.1
+
+12) Syslog Config
+
+service time log date msec
+logging host 192.168.150.10
+logging trap debug
+
+service time log date msec
+logging host 192.168.150.10
+logging trap debug
+
+service time log date msec
+logging host 192.168.150.10
+logging trap debug
+
+13) Access-List Config on R3
+
+ip access-list standard PC1_BLOCK
+deny 209.165.150.254
+permit any
+exit
+int s0/0/1
+access-group PC1_BLOCK in
+ip access-list standard ADMIN_MGMT
+permit 10.123.12.1
+deny any
+exit
+line vty 0 4
+access-class ADMIN_MGMT in 
+trans in telnet
+exit
+
+
